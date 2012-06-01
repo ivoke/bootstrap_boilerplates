@@ -14,6 +14,7 @@
 
 // Core variables and mixins
 @import "variables"; // Modify this for custom colors, font-sizes, etc
+@import "o_vars";
 @import "mixins";
 
 // CSS Reset
@@ -64,3 +65,4 @@
 
 // Utility classes
 @import "utilities"; // Has to be last to override when necessary
+@import "o_classes";

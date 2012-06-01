@@ -10,10 +10,9 @@ end
 require 'rake'
 
 VERSION = "2.0.3"
-BOOTSTRAP_CSS = "bootstrap-#{VERSION}.css"
-BOOTSTRAP_MIN_CSS = "bootstrap-#{VERSION}.min.css"
-BOOTSTRAP_RESPONSIVE_CSS = "bootstrap-responsive-#{VERSION}.css"
-BOOTSTRAP_RESPONSIVE_MIN_CSS = "bootstrap-responsive-#{VERSION}.min.css"
+DIRECTORY = "docs/assets/css"
+BOOTSTRAP_CSS = "#{DIRECTORY}/bootstrap.css"
+BOOTSTRAP_RESPONSIVE_CSS = "#{DIRECTORY}/responsive.css"
 
 SASS_COMMAND = "sass --precision 10 --load-path lib --style"
 
@@ -24,11 +23,6 @@ task BOOTSTRAP_CSS do |target|
   File.open(target.to_s, 'w+') { |f| f.write(css) }
 end
 
-task BOOTSTRAP_MIN_CSS do |target|
-  sh "#{SASS_COMMAND} compressed lib/bootstrap.scss:#{target}"
-end
-
-
 task BOOTSTRAP_RESPONSIVE_CSS do |target|
   sh "#{SASS_COMMAND} expanded lib/responsive.scss:#{target}"
   css = IO.read(target.to_s)
@@ -36,17 +30,13 @@ task BOOTSTRAP_RESPONSIVE_CSS do |target|
   File.open(target.to_s, 'w+') { |f| f.write(css) }
 end
 
-task BOOTSTRAP_RESPONSIVE_MIN_CSS do |target|
-  sh "#{SASS_COMMAND} compressed lib/responsive.scss:#{target}"
-end
-
 
 desc "build regular and compresed versions of bootstrap"
-task :build => [BOOTSTRAP_CSS, BOOTSTRAP_MIN_CSS, BOOTSTRAP_RESPONSIVE_CSS, BOOTSTRAP_RESPONSIVE_MIN_CSS]
+task :build => [BOOTSTRAP_CSS, BOOTSTRAP_RESPONSIVE_CSS]
 
-desc "rebuild regular version of bootstrap when modifications are made"
+desc "rebuild bootstrap when modifications are made"
 task :watch do
-  sh "#{SASS_COMMAND} expanded --watch lib/bootstrap.scss:#{BOOTSTRAP_CSS}"
+  sh "#{SASS_COMMAND} expanded --watch lib:#{DIRECTORY}"
 end
 
 task :default => :build
